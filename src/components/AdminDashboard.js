@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [showAddCourse, setShowAddCourse] = useState(false);
   const navigate = useNavigate();
 
   // Check if user is admin (in a real app, this would be done server-side)
   const isAdmin = localStorage.getItem('userRole') === 'admin';
-  
+
   // If not admin, redirect to login
   if (!isAdmin) {
     navigate('/auth');
@@ -16,9 +17,21 @@ const AdminDashboard = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userRole');
-    navigate('/auth');
+    if (onLogout) {
+      onLogout();
+    } else {
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userRole');
+      navigate('/auth');
+    }
+  };
+
+  const handleAddCourseClick = () => {
+    setShowAddCourse(true);
+  };
+
+  const closeAddCourse = () => {
+    setShowAddCourse(false);
   };
 
   // Mock data
@@ -91,7 +104,7 @@ const AdminDashboard = () => {
             className="mb-8"
           >
             <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-            <p className="text-gray-400 mt-2">Manage your space technology platform</p>
+            <p className="text-gray-300 mt-2">Manage your space technology platform</p>
           </motion.div>
 
           {activeTab === 'overview' && (
@@ -214,9 +227,24 @@ const AdminDashboard = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <button className="text-blue-400 hover:text-blue-300 mr-3">View</button>
-                          <button className="text-yellow-400 hover:text-yellow-300 mr-3">Edit</button>
-                          <button className="text-red-400 hover:text-red-300">Delete</button>
+                          <button
+                            className="text-blue-400 hover:text-blue-300 mr-3"
+                            onClick={() => console.log(`View project ${project.id}`)}
+                          >
+                            View
+                          </button>
+                          <button
+                            className="text-yellow-400 hover:text-yellow-300 mr-3"
+                            onClick={() => console.log(`Edit project ${project.id}`)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-red-400 hover:text-red-300"
+                            onClick={() => console.log(`Delete project ${project.id}`)}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -248,12 +276,18 @@ const AdminDashboard = () => {
                     <div className="flex justify-between items-center">
                       <span className="text-blue-400 font-bold">₹4,999</span>
                       <div className="flex space-x-2">
-                        <button className="text-yellow-400 hover:text-yellow-300">
+                        <button
+                          className="text-yellow-400 hover:text-yellow-300"
+                          onClick={() => console.log(`Edit course ${item}`)}
+                        >
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" clipRule="evenodd" />
                           </svg>
                         </button>
-                        <button className="text-red-400 hover:text-red-300">
+                        <button
+                          className="text-red-400 hover:text-red-300"
+                          onClick={() => console.log(`Delete course ${item}`)}
+                        >
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
@@ -321,8 +355,18 @@ const AdminDashboard = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <button className="text-blue-400 hover:text-blue-300 mr-3">Edit</button>
-                          <button className="text-red-400 hover:text-red-300">Delete</button>
+                          <button
+                            className="text-blue-400 hover:text-blue-300 mr-3"
+                            onClick={() => console.log(`Edit user ${user.id}`)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-red-400 hover:text-red-300"
+                            onClick={() => console.log(`Delete user ${user.id}`)}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}

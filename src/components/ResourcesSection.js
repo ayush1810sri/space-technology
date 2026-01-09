@@ -1,110 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-
-const resources = [
-  {
-    id: 1,
-    title: "Introduction to Rocket Propulsion",
-    type: "Course",
-    description: "Fundamentals of chemical and electric propulsion systems used in space vehicles",
-    link: "#",
-    category: "Propulsion",
-    access: {
-      author: "Dr. Satish Dhawan",
-      institution: "Indian Institute of Space Science and Technology",
-      duration: "4 weeks",
-      level: "Beginner",
-      price: 2999,
-      lessons: 12,
-      certificate: "Yes"
-    }
-  },
-  {
-    id: 2,
-    title: "Satellite Design Principles",
-    type: "Course",
-    description: "Comprehensive guide to designing and building satellites for various missions",
-    link: "#",
-    category: "Satellites",
-    access: {
-      author: "ISRO Educational Team",
-      institution: "Indian Space Research Organisation",
-      duration: "6 weeks",
-      level: "Intermediate",
-      price: 4999,
-      lessons: 18,
-      certificate: "Yes"
-    }
-  },
-  {
-    id: 3,
-    title: "Space Mission Planning",
-    type: "Course",
-    description: "End-to-end process of planning and executing space missions from concept to completion",
-    link: "#",
-    category: "Mission Design",
-    access: {
-      author: "Prof. K. Radhakrishnan",
-      institution: "IIT Bombay",
-      duration: "8 weeks",
-      level: "Advanced",
-      price: 7999,
-      lessons: 24,
-      certificate: "Yes"
-    }
-  },
-  {
-    id: 4,
-    title: "Materials for Space Applications",
-    type: "Course",
-    description: "Advanced materials that can withstand the harsh conditions of space",
-    link: "#",
-    category: "Materials",
-    access: {
-      author: "Dr. A.P.J. Abdul Kalam",
-      institution: "Defence Research and Development Organisation",
-      duration: "5 weeks",
-      level: "Intermediate",
-      price: 5499,
-      lessons: 15,
-      certificate: "Yes"
-    }
-  },
-  {
-    id: 5,
-    title: "Spacecraft Systems Engineering",
-    type: "Course",
-    description: "Comprehensive overview of systems engineering principles applied to spacecraft",
-    link: "#",
-    category: "Engineering",
-    access: {
-      author: "Dr. Ravi Prakash",
-      institution: "ISRO",
-      duration: "10 weeks",
-      level: "Advanced",
-      price: 9999,
-      lessons: 30,
-      certificate: "Yes"
-    }
-  },
-  {
-    id: 6,
-    title: "Human Factors in Space",
-    type: "Course",
-    description: "Psychological and physiological considerations for human spaceflight",
-    link: "#",
-    category: "Life Sciences",
-    access: {
-      author: "Dr. Sunita Williams",
-      institution: "NASA",
-      duration: "3 weeks",
-      level: "Beginner",
-      price: 2499,
-      lessons: 9,
-      certificate: "Yes"
-    }
-  }
-];
+import * as api from '../services/api';
 
 const categories = ["All", "Propulsion", "Satellites", "Mission Design", "Materials", "Engineering", "Life Sciences"];
 
@@ -128,6 +24,7 @@ const faqs = [
 ];
 
 const ResourcesSection = () => {
+  const [resources, setResources] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [openFaq, setOpenFaq] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
@@ -135,9 +32,140 @@ const ResourcesSection = () => {
   const [paymentStep, setPaymentStep] = useState(1); // 1: Select method, 2: Enter UPI, 3: Payment success
   const [upiId, setUpiId] = useState("");
   const [purchasedCourses, setPurchasedCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredResources = activeCategory === "All" 
-    ? resources 
+  // Fetch resources from the backend API
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const fetchedResources = await api.fetchSpaceTechItems();
+        // Filter resources to only include courses
+        const courseResources = fetchedResources.filter(resource =>
+          resource.category === 'Propulsion' ||
+          resource.category === 'Satellites' ||
+          resource.category === 'Mission Design' ||
+          resource.category === 'Materials' ||
+          resource.category === 'Engineering' ||
+          resource.category === 'Life Sciences'
+        );
+        setResources(courseResources);
+      } catch (error) {
+        console.error('Error fetching resources:', error);
+        // Fallback to static data if API fails
+        setResources([
+          {
+            _id: 1,
+            name: "Introduction to Rocket Propulsion",
+            type: "Course",
+            description: "Fundamentals of chemical and electric propulsion systems used in space vehicles",
+            link: "#",
+            category: "Propulsion",
+            access: {
+              author: "Dr. Satish Dhawan",
+              institution: "Indian Institute of Space Science and Technology",
+              duration: "4 weeks",
+              level: "Beginner",
+              price: 2999,
+              lessons: 12,
+              certificate: "Yes"
+            }
+          },
+          {
+            _id: 2,
+            name: "Satellite Design Principles",
+            type: "Course",
+            description: "Comprehensive guide to designing and building satellites for various missions",
+            link: "#",
+            category: "Satellites",
+            access: {
+              author: "ISRO Educational Team",
+              institution: "Indian Space Research Organisation",
+              duration: "6 weeks",
+              level: "Intermediate",
+              price: 4999,
+              lessons: 18,
+              certificate: "Yes"
+            }
+          },
+          {
+            _id: 3,
+            name: "Space Mission Planning",
+            type: "Course",
+            description: "End-to-end process of planning and executing space missions from concept to completion",
+            link: "#",
+            category: "Mission Design",
+            access: {
+              author: "Prof. K. Radhakrishnan",
+              institution: "IIT Bombay",
+              duration: "8 weeks",
+              level: "Advanced",
+              price: 7999,
+              lessons: 24,
+              certificate: "Yes"
+            }
+          },
+          {
+            _id: 4,
+            name: "Materials for Space Applications",
+            type: "Course",
+            description: "Advanced materials that can withstand the harsh conditions of space",
+            link: "#",
+            category: "Materials",
+            access: {
+              author: "Dr. A.P.J. Abdul Kalam",
+              institution: "Defence Research and Development Organisation",
+              duration: "5 weeks",
+              level: "Intermediate",
+              price: 5499,
+              lessons: 15,
+              certificate: "Yes"
+            }
+          },
+          {
+            _id: 5,
+            name: "Spacecraft Systems Engineering",
+            type: "Course",
+            description: "Comprehensive overview of systems engineering principles applied to spacecraft",
+            link: "#",
+            category: "Engineering",
+            access: {
+              author: "Dr. Ravi Prakash",
+              institution: "ISRO",
+              duration: "10 weeks",
+              level: "Advanced",
+              price: 9999,
+              lessons: 30,
+              certificate: "Yes"
+            }
+          },
+          {
+            _id: 6,
+            name: "Human Factors in Space",
+            type: "Course",
+            description: "Psychological and physiological considerations for human spaceflight",
+            link: "#",
+            category: "Life Sciences",
+            access: {
+              author: "Dr. Sunita Williams",
+              institution: "NASA",
+              duration: "3 weeks",
+              level: "Beginner",
+              price: 2499,
+              lessons: 9,
+              certificate: "Yes"
+            }
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResources();
+  }, []);
+
+  const filteredResources = activeCategory === "All"
+    ? resources
     : resources.filter(resource => resource.category === activeCategory);
 
   const toggleFaq = (id) => {
@@ -163,7 +191,7 @@ const ResourcesSection = () => {
     // Simulate payment processing
     setPaymentStep(3); // Payment success
     // Add course to purchased courses
-    setPurchasedCourses(prev => [...prev, selectedResource.id]);
+    setPurchasedCourses(prev => [...prev, selectedResource._id || selectedResource.id]);
     // Reset after 3 seconds
     setTimeout(() => {
       closePaymentGateway();
@@ -185,7 +213,7 @@ const ResourcesSection = () => {
         <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
           Space Technology Courses
         </h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+        <p className="text-xl text-gray-200 max-w-3xl mx-auto">
           Enroll in our specialized courses to advance your knowledge of space technology
         </p>
       </motion.div>
@@ -213,63 +241,69 @@ const ResourcesSection = () => {
       </motion.div>
 
       {/* Resources Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
-      >
-        {filteredResources.map((resource) => (
-          <motion.div
-            key={resource.id}
-            whileHover={{ y: -5 }}
-            className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <span className="px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-xs font-semibold">
-                {resource.type}
-              </span>
-              <span className="px-3 py-1 bg-gray-700 rounded-full text-xs">
-                {resource.category}
-              </span>
-            </div>
-            
-            <h3 className="text-xl font-bold mb-3">{resource.title}</h3>
-            <p className="text-gray-300 mb-4">{resource.description}</p>
-            
-            <div className="flex justify-between items-center mb-4">
-              <div className="text-lg font-bold text-blue-400">
-                ₹{resource.access.price}
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+        >
+          {filteredResources.map((resource) => (
+            <motion.div
+              key={resource._id || resource.id}
+              whileHover={{ y: -5 }}
+              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <span className="px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-xs font-semibold">
+                  {resource.type || "Course"}
+                </span>
+                <span className="px-3 py-1 bg-gray-700 rounded-full text-xs">
+                  {resource.category}
+                </span>
               </div>
-              <div className="text-sm text-gray-400">
-                {resource.access.lessons} lessons
+
+              <h3 className="text-xl font-bold mb-3">{resource.name || resource.title}</h3>
+              <p className="text-gray-200 mb-4">{resource.description}</p>
+
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-lg font-bold text-blue-400">
+                  ₹{resource.access?.price || "0"}
+                </div>
+                <div className="text-sm text-gray-400">
+                  {resource.access?.lessons || "0"} lessons
+                </div>
               </div>
-            </div>
-            
-            {isCoursePurchased(resource.id) ? (
-              <button 
-                className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Access Course
-              </button>
-            ) : (
-              <button 
-                onClick={() => openPaymentGateway(resource)}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                  <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
-                </svg>
-                Enroll Now
-              </button>
-            )}
-          </motion.div>
-        ))}
-      </motion.div>
+
+              {isCoursePurchased(resource._id || resource.id) ? (
+                <button
+                  className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Access Course
+                </button>
+              ) : (
+                <button
+                  onClick={() => openPaymentGateway(resource)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                    <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                  </svg>
+                  Enroll Now
+                </button>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
 
       {/* Payment Gateway Modal */}
       {showPayment && selectedResource && (
@@ -303,11 +337,11 @@ const ResourcesSection = () => {
                   <div className="bg-gray-800 rounded-lg p-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h4 className="font-bold">{selectedResource.title}</h4>
-                        <p className="text-gray-400 text-sm">{selectedResource.access.author}</p>
+                        <h4 className="font-bold">{selectedResource.name || selectedResource.title}</h4>
+                        <p className="text-gray-400 text-sm">{selectedResource.access?.author || 'Author not specified'}</p>
                       </div>
                       <div className="text-xl font-bold text-blue-400">
-                        ₹{selectedResource.access.price}
+                        ₹{selectedResource.access?.price || 0}
                       </div>
                     </div>
                   </div>
@@ -355,11 +389,11 @@ const ResourcesSection = () => {
                   <div className="bg-gray-800 rounded-lg p-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h4 className="font-bold">{selectedResource.title}</h4>
-                        <p className="text-gray-400 text-sm">{selectedResource.access.author}</p>
+                        <h4 className="font-bold">{selectedResource.name || selectedResource.title}</h4>
+                        <p className="text-gray-400 text-sm">{selectedResource.access?.author || 'Author not specified'}</p>
                       </div>
                       <div className="text-xl font-bold text-blue-400">
-                        ₹{selectedResource.access.price}
+                        ₹{selectedResource.access?.price || 0}
                       </div>
                     </div>
                   </div>
@@ -403,7 +437,7 @@ const ResourcesSection = () => {
                 <div className="text-5xl text-green-500 mb-4">✓</div>
                 <h4 className="text-xl font-bold mb-2">Payment Successful!</h4>
                 <p className="text-gray-300 mb-4">
-                  You've successfully enrolled in {selectedResource.title}
+                  You've successfully enrolled in {selectedResource.name || selectedResource.title}
                 </p>
                 <p className="text-gray-400">
                   You can now access the course content
@@ -457,7 +491,7 @@ const ResourcesSection = () => {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="px-5 pb-5 text-gray-300"
+                  className="px-5 pb-5 text-gray-200"
                 >
                   {faq.answer}
                 </motion.div>
@@ -475,7 +509,7 @@ const ResourcesSection = () => {
         className="max-w-2xl mx-auto bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 text-center"
       >
         <h3 className="text-2xl font-bold mb-3">Stay Updated on Space Innovation</h3>
-        <p className="text-gray-300 mb-6">
+        <p className="text-gray-200 mb-6">
           Subscribe to our newsletter for the latest resources, student projects, and industry insights
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
@@ -484,7 +518,10 @@ const ResourcesSection = () => {
             placeholder="Your email address"
             className="flex-grow px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
           />
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300">
+          <button
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300"
+            onClick={() => console.log('Newsletter subscribe button clicked')}
+          >
             Subscribe
           </button>
         </div>

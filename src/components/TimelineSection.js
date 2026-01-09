@@ -54,7 +54,7 @@ const TimelineSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             Space Exploration Milestones
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
             Key achievements that have shaped our journey beyond Earth through engineering innovation
           </p>
         </motion.div>
@@ -77,7 +77,7 @@ const TimelineSection = () => {
                   {milestone.year}
                 </div>
                 <h3 className="text-2xl font-bold mb-2">{milestone.title}</h3>
-                <p className="text-gray-300 mb-3">{milestone.description}</p>
+                <p className="text-gray-200 mb-3">{milestone.description}</p>
                 <p className="text-blue-300 italic">{milestone.significance}</p>
               </div>
               
@@ -98,7 +98,7 @@ const TimelineSection = () => {
           className="mt-16 text-center"
         >
           <h3 className="text-2xl font-bold mb-4">The Future of Space Technology</h3>
-          <p className="text-gray-300 max-w-3xl mx-auto">
+          <p className="text-gray-100 max-w-3xl mx-auto">
             As we look to the future, emerging technologies like reusable rockets, space-based solar power, 
             asteroid mining, and interplanetary travel are becoming realities. The next generation of engineers 
             and innovators will play a crucial role in shaping humanity's expansion into the cosmos.

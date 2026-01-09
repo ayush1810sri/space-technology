@@ -180,7 +180,7 @@ const SpaceHomePage = () => {
           </motion.h1>
           
           <motion.p 
-            className="text-lg md:text-xl mb-10 text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl mb-10 text-gray-200 max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
@@ -233,11 +233,11 @@ const SpaceHomePage = () => {
                 transition={{ duration: 0.3 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+                transition1={{ duration: 0.5, delay: 1 + index * 0.1 }}
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-400">{feature.desc}</p>
+                <p className="text-gray-300">{feature.desc}</p>
               </motion.div>
             ))}
           </motion.div>

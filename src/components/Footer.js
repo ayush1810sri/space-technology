@@ -57,7 +57,7 @@ const Footer = () => {
             <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
               Space Technology
             </h3>
-            <p className="text-gray-400 mb-4 max-w-md">
+            <p className="text-gray-300 mb-4 max-w-md">
               Advancing the frontiers of space exploration through cutting-edge engineering principles 
               in the design, development, manufacture, and operation of devices and systems for space travel.
             </p>
@@ -72,7 +72,11 @@ const Footer = () => {
             <h4 className="text-lg font-bold mb-4">Technologies</h4>
             <ul className="space-y-2 text-gray-400">
               {technologies.map((tech, index) => (
-                <li key={index} className="hover:text-white cursor-pointer transition-colors">
+                <li
+                  key={index}
+                  className="hover:text-white cursor-pointer transition-colors"
+                  onClick={() => console.log(`Technology clicked: ${tech}`)}
+                >
                   {tech}
                 </li>
               ))}
@@ -88,7 +92,11 @@ const Footer = () => {
             <h4 className="text-lg font-bold mb-4">Explore</h4>
             <ul className="space-y-2 text-gray-400">
               {exploreLinks.map((item, index) => (
-                <li key={index} className="hover:text-white cursor-pointer transition-colors">
+                <li
+                  key={index}
+                  className="hover:text-white cursor-pointer transition-colors"
+                  onClick={() => console.log(`Explore link clicked: ${item}`)}
+                >
                   {item}
                 </li>
               ))}
@@ -109,7 +117,7 @@ const Footer = () => {
                   href={social.url}
                   whileHover={{ scale: 1.2, y: -5 }}
                   whileTap={{ scale: 0.9 }}
-                  className="text-gray-400 hover:text-white cursor-pointer transition-colors"
+                  className="text-gray-300 hover:text-white cursor-pointer transition-colors"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -118,14 +126,14 @@ const Footer = () => {
             </div>
             <div className="bg-gray-800 rounded-lg p-4">
               <h5 className="font-bold mb-2">Contact</h5>
-              <p className="text-gray-400 text-sm">spacetech@example.com</p>
-              <p className="text-gray-400 text-sm">+1 (555) 123-4567</p>
+              <p className="text-gray-300 text-sm">spacetech@example.com</p>
+              <p className="text-gray-300 text-sm">+1 (555) 123-4567</p>
             </div>
           </motion.div>
         </div>
         
         <motion.div 
-          className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500"
+          className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

@@ -98,7 +98,7 @@ const MissionSimulator = () => {
         <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
           Space Mission Simulator
         </h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+        <p className="text-xl text-gray-200 max-w-3xl mx-auto">
           Design your own space mission and see how likely it is to succeed
         </p>
       </motion.div>
@@ -204,7 +204,7 @@ const MissionSimulator = () => {
             <div className="space-y-6">
               <div className="bg-gray-900 rounded-xl p-5">
                 <h4 className="text-xl font-bold mb-3 text-center">{result.mission.name}</h4>
-                <p className="text-gray-300 text-center mb-4">{result.mission.description}</p>
+                <p className="text-gray-200 text-center mb-4">{result.mission.description}</p>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-800 rounded-lg p-3">
@@ -236,11 +236,11 @@ const MissionSimulator = () => {
                 <div className="space-y-3">
                   <div>
                     <p className="text-gray-400">Payload: {result.payload.name}</p>
-                    <p className="text-sm text-gray-300">Mass: {result.payload.mass} | Purpose: {result.payload.purpose}</p>
+                    <p className="text-sm text-gray-200">Mass: {result.payload.mass} | Purpose: {result.payload.purpose}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">Propulsion: {result.propulsion.name}</p>
-                    <p className="text-sm text-gray-300">Efficiency: {result.propulsion.efficiency} | Fuel: {result.propulsion.fuel}</p>
+                    <p className="text-sm text-gray-200">Efficiency: {result.propulsion.efficiency} | Fuel: {result.propulsion.fuel}</p>
                   </div>
                 </div>
               </div>

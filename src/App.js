@@ -11,12 +11,18 @@ import AdminDashboard from './components/AdminDashboard';
 import SpaceHomePage from './components/SpaceHomePage';
 import Footer from './components/Footer';
 
+// Custom hook to handle navigation in functional component outside of Router
+const useAppNavigate = () => {
+  const navigate = useNavigate();
+  return navigate;
+};
+
 // Create a component that handles navigation and authentication
-const AppContent = () => {
+const AppContent = ({ handleAuthentication, handleLogout }) => {
   const [activeSection, setActiveSection] = useState('home');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState('user'); // 'user' or 'admin'
-  const navigate = useNavigate();
+  const navigate = useAppNavigate(); // Get navigate function
   const location = useLocation();
 
   // Check if user is authenticated (in a real app, this would check a token)
@@ -28,32 +34,6 @@ const AppContent = () => {
       setUserRole(role || 'user');
     }
   }, []);
-
-  // Handle authentication
-  const handleAuthentication = (status, role = 'user') => {
-    setIsAuthenticated(status);
-    setUserRole(role);
-    localStorage.setItem('isAuthenticated', status);
-    localStorage.setItem('userRole', role);
-    if (status) {
-      if (role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
-    } else {
-      navigate('/auth');
-    }
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUserRole('user');
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userRole');
-    navigate('/auth');
-  };
 
   // Check URL hash to directly navigate to a section
   useEffect(() => {
@@ -128,7 +108,7 @@ const AppContent = () => {
         <nav className="fixed top-0 w-full z-50 bg-black bg-opacity-50 backdrop-blur-lg border-b border-gray-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <motion.div 
+              <motion.div
                 className="flex-shrink-0 flex items-center"
                 whileHover={{ scale: 1.05 }}
               >
@@ -183,12 +163,52 @@ const AppContent = () => {
 
 // Main App component with Router
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState('user');
+
+  // Check if user is authenticated on app load
+  useEffect(() => {
+    const authStatus = localStorage.getItem('isAuthenticated');
+    const role = localStorage.getItem('userRole');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+      setUserRole(role || 'user');
+    }
+  }, []);
+
+  // Handle authentication
+  const handleAuthentication = (status, role = 'user') => {
+    setIsAuthenticated(status);
+    setUserRole(role);
+    localStorage.setItem('isAuthenticated', status);
+    localStorage.setItem('userRole', role);
+    if (status) {
+      if (role === 'admin') {
+        // Using window.location to handle navigation outside of Router context
+        window.location.href = '/admin';
+      } else {
+        window.location.href = '/';
+      }
+    } else {
+      window.location.href = '/auth';
+    }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUserRole('user');
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userRole');
+    window.location.href = '/auth';
+  };
+
   return (
     <Router>
       <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/admin/*" element={<AdminDashboard />} />
-        <Route path="/*" element={<AppContent />} />
+        <Route path="/auth" element={<AuthPage setIsAuthenticated={handleAuthentication} />} />
+        <Route path="/admin/*" element={<AdminDashboard onLogout={handleLogout} />} />
+        <Route path="/*" element={<AppContent handleAuthentication={handleAuthentication} handleLogout={handleLogout} />} />
       </Routes>
     </Router>
   );

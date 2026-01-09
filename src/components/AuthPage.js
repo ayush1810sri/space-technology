@@ -208,7 +208,7 @@ const AuthPage = ({ setIsAuthenticated }) => {
           <h2 className="text-2xl font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             SpaceTech Academy
           </h2>
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-300 text-sm">
             {isAdminLogin ? 'Administrator Portal' : isLogin ? 'Sign in to your account' : 'Create a new account'}
           </p>
         </div>
@@ -346,7 +346,7 @@ const AuthPage = ({ setIsAuthenticated }) => {
                 <div className="flex justify-between items-center">
                   <label className="flex items-center">
                     <input type="checkbox" className="rounded bg-gray-700 border-gray-600" />
-                    <span className="ml-2 text-gray-400 text-sm">Remember me</span>
+                    <span className="ml-2 text-gray-300 text-sm">Remember me</span>
                   </label>
                   <a href="#" className="text-blue-400 hover:text-blue-300 text-sm">Forgot password?</a>
                 </div>
@@ -367,7 +367,7 @@ const AuthPage = ({ setIsAuthenticated }) => {
             
             {!isAdminLogin && (
               <div className="mt-4 text-center">
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-300 text-sm">
                   {isLogin ? "Don't have an account? " : "Already have an account? "}
                   <button
                     onClick={() => setIsLogin(!isLogin)}
@@ -409,7 +409,7 @@ const AuthPage = ({ setIsAuthenticated }) => {
                     <div className="w-full border-t border-gray-700"></div>
                   </div>
                   <div className="relative flex justify-center text-xs">
-                    <span className="px-2 bg-gray-800 text-gray-400">Or continue with</span>
+                    <span className="px-2 bg-gray-800 text-gray-300">Or continue with</span>
                   </div>
                 </div>
                 
@@ -469,7 +469,7 @@ const AuthPage = ({ setIsAuthenticated }) => {
               </h3>
             </div>
             
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-gray-300 text-sm mb-4">
               Please enter your {showSocialLogin} ID to continue
             </p>
             

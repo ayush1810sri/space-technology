@@ -81,7 +81,7 @@ const SpaceTechnologySection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             Space Technologies
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
             Revolutionary innovations driving humanity's journey to the stars through engineering excellence
           </p>
         </motion.div>
@@ -118,13 +118,13 @@ const SpaceTechnologySection = () => {
                   {tech.icon}
                 </motion.div>
                 <h3 className="text-2xl font-bold mb-3">{tech.title}</h3>
-                <p className="text-gray-300 mb-4">{tech.description}</p>
+                <p className="text-gray-200 mb-4">{tech.description}</p>
                 
                 <div className="mt-4">
                   <h4 className="font-semibold text-blue-400 mb-2">Applications:</h4>
                   <ul className="space-y-1">
                     {tech.applications.map((application, index) => (
-                      <li key={index} className="flex items-center text-sm text-gray-400">
+                      <li key={index} className="flex items-center text-sm text-gray-300">
                         <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
@@ -148,7 +148,7 @@ const SpaceTechnologySection = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-2/3 mb-6 md:mb-0">
               <h3 className="text-2xl font-bold mb-4">Space Technology in Everyday Life</h3>
-              <p className="text-gray-200">
+              <p className="text-gray-100">
                 Space technology isn't just for astronauts and scientists. Innovations developed for space exploration 
                 have transformed our daily lives through GPS navigation, satellite communications, weather forecasting, 
                 and medical technologies originally designed for space missions.
